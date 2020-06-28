@@ -1,9 +1,12 @@
 package it.polito.tdp.artsmia;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.artsmia.model.Adiacenza;
+import it.polito.tdp.artsmia.model.Artista;
 import it.polito.tdp.artsmia.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,7 +61,34 @@ public class ArtsmiaController {
     @FXML
     void doCalcolaPercorso(ActionEvent event) {
     	txtResult.clear();
-    	txtResult.appendText("Calcola percorso");
+    	Integer id;
+    	try {
+    		id=Integer.parseInt(this.txtArtista.getText());
+    	}catch(NumberFormatException e) {
+    		this.txtResult.appendText("Artista non espresso nel formato corretto");
+    		return;
+    	}
+    	if(this.model.getValido(id)==true) {
+    		this.model.getPercorso(id);
+    	}else {
+    		this.txtResult.appendText("Artista non presente");
+    	}
+    	List<Artista> attori = new ArrayList<>(this.model.getPercorso(id));
+    	Integer grado= this.model.getGrado();
+    	if(grado!=0) {
+    		this.txtResult.appendText("Numero Esposizioni comuni: "+grado+"\n");
+    	}else {
+    		this.txtResult.appendText("Ricorsione non giunta a buon fine");
+    		return;
+    	}
+    	if(attori.size()==1) {
+    		this.txtResult.appendText("Ricorsione senza collegamenti");
+    		return;
+    	}else {
+    		for(Artista a: attori) {
+        		this.txtResult.appendText(a.getNome()+"("+a.getId()+")\n");
+        	}
+    	}
     }
 
     @FXML

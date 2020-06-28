@@ -70,7 +70,7 @@ public class ArtsmiaDAO {
 
 	public List<String> getRuoli() {
 
-		String sql = "Select Distinct role " + "from authorship";
+		String sql = "Select Distinct role " + "from authorship ORDER BY role";
 		List<String> result = new ArrayList<>();
 		Connection conn = DBConnect.getConnection();
 
